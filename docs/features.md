@@ -2894,6 +2894,11 @@ area.
   longer crashes OBS on its graphics thread: the empty task is skipped and
   the tasks queued after it still run. *All*, 2026-11-12. Issue
   [#4408](https://github.com/obs-rust/obs-studio/issues/4408).
+- A plugin or script that adds or removes a packet callback, or sets a
+  reconnect callback, with no output (NULL) no longer crashes OBS; the
+  call is ignored with a debug line, as the other output calls do. *All*,
+  2026-11-12. Issue
+  [#4754](https://github.com/obs-rust/obs-studio/issues/4754).
 
 ### Security hardening
 
