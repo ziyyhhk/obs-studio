@@ -63,62 +63,62 @@ ARTIFACTS = (
     (
         'obs-studio-macos-arm64-{commit}',
         'obs-studio-*-macos-apple.dmg',
-        'OBS-Studio-{version}-macOS-Apple.dmg',
+        'OBS-Studio-Rust-{version}-macOS-Apple.dmg',
     ),
     (
         'obs-studio-macos-arm64-{commit}-dSYMs',
         'obs-studio-*-macos-apple-dSYMs.tar.xz',
-        'OBS-Studio-{version}-macOS-Apple-dSYMs.tar.xz',
+        'OBS-Studio-Rust-{version}-macOS-Apple-dSYMs.tar.xz',
     ),
     (
         'obs-studio-macos-x86_64-{commit}',
         'obs-studio-*-macos-intel.dmg',
-        'OBS-Studio-{version}-macOS-Intel.dmg',
+        'OBS-Studio-Rust-{version}-macOS-Intel.dmg',
     ),
     (
         'obs-studio-macos-x86_64-{commit}-dSYMs',
         'obs-studio-*-macos-intel-dSYMs.tar.xz',
-        'OBS-Studio-{version}-macOS-Intel-dSYMs.tar.xz',
+        'OBS-Studio-Rust-{version}-macOS-Intel-dSYMs.tar.xz',
     ),
     (
         'obs-studio-ubuntu-26.04-x86_64-{commit}',
         'obs-studio-*-x86_64-ubuntu-gnu.deb',
-        'OBS-Studio-{version}-Ubuntu-26.04-x86_64.deb',
+        'OBS-Studio-Rust-{version}-Ubuntu-26.04-x86_64.deb',
     ),
     (
         'obs-studio-ubuntu-26.04-x86_64-{commit}-dbgsym',
         'obs-studio-*-x86_64-ubuntu-gnu-dbgsym.ddeb',
-        'OBS-Studio-{version}-Ubuntu-26.04-x86_64-dbsym.ddeb',
+        'OBS-Studio-Rust-{version}-Ubuntu-26.04-x86_64-dbsym.ddeb',
     ),
     (
         'obs-studio-ubuntu-26.04-sources-{commit}',
         'obs-studio-*-sources.tar.gz',
-        'OBS-Studio-{version}-Sources.tar.gz',
+        'OBS-Studio-Rust-{version}-Sources.tar.gz',
     ),
     (
         'obs-studio-windows-x64-{version}-signed',
         'OBS-Studio-*.zip',
-        'OBS-Studio-{version}-Windows-x64.zip',
+        'OBS-Studio-Rust-{version}-Windows-x64.zip',
     ),
     (
         'obs-studio-windows-x64-{version}-installer',
         'OBS-Studio-*.exe',
-        'OBS-Studio-{version}-Windows-x64-Installer.exe',
+        'OBS-Studio-Rust-{version}-Windows-x64-Installer.exe',
     ),
     (
         'obs-studio-windows-x64-{version}-pdbs',
         'OBS-Studio-*-pdbs.zip',
-        'OBS-Studio-{version}-Windows-x64-PDBs.zip',
+        'OBS-Studio-Rust-{version}-Windows-x64-PDBs.zip',
     ),
     (
         'obs-studio-windows-arm64-{version}-signed',
         'OBS-Studio-*.zip',
-        'OBS-Studio-{version}-Windows-arm64.zip',
+        'OBS-Studio-Rust-{version}-Windows-arm64.zip',
     ),
     (
         'obs-studio-windows-arm64-{version}-pdbs',
         'OBS-Studio-*-pdbs.zip',
-        'OBS-Studio-{version}-Windows-arm64-PDBs.zip',
+        'OBS-Studio-Rust-{version}-Windows-arm64-PDBs.zip',
     ),
 )
 

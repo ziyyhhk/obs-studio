@@ -265,16 +265,16 @@ jobs:
           draft: true
           prerelease: ${{ fromJSON(steps.check.outputs.prerelease) }}
           tag_name: ${{ steps.check.outputs.version }}
-          name: OBS Studio ${{ steps.check.outputs.version }}
+          name: OBS-Studio-Rust fork (ziyyhhk) ${{ steps.check.outputs.version }} — unsigned
           body_path: ${{ github.workspace }}/CHECKSUMS.txt
           files: |
-            ${{ github.workspace }}/OBS-Studio-${{ steps.check.outputs.version }}-macOS-*.dmg
-            ${{ github.workspace }}/OBS-Studio-${{ steps.check.outputs.version }}-macOS-*-dSYMs.tar.xz
-            ${{ github.workspace }}/OBS-Studio-${{ steps.check.outputs.version }}-Ubuntu-*.deb
-            ${{ github.workspace }}/OBS-Studio-${{ steps.check.outputs.version }}-Ubuntu-*.ddeb
-            ${{ github.workspace }}/OBS-Studio-${{ steps.check.outputs.version }}-Sources.tar.gz
-            ${{ github.workspace }}/OBS-Studio-${{ steps.check.outputs.version }}-Windows-x64.zip
-            ${{ github.workspace }}/OBS-Studio-${{ steps.check.outputs.version }}-Windows-x64-Installer.exe
-            ${{ github.workspace }}/OBS-Studio-${{ steps.check.outputs.version }}-Windows-x64-PDBs.zip
-            ${{ github.workspace }}/OBS-Studio-${{ steps.check.outputs.version }}-Windows-arm64.zip
-            ${{ github.workspace }}/OBS-Studio-${{ steps.check.outputs.version }}-Windows-arm64-PDBs.zip
+            ${{ github.workspace }}/OBS-Studio-Rust-${{ steps.check.outputs.version }}-macOS-*.dmg
+            ${{ github.workspace }}/OBS-Studio-Rust-${{ steps.check.outputs.version }}-macOS-*-dSYMs.tar.xz
+            ${{ github.workspace }}/OBS-Studio-Rust-${{ steps.check.outputs.version }}-Ubuntu-*.deb
+            ${{ github.workspace }}/OBS-Studio-Rust-${{ steps.check.outputs.version }}-Ubuntu-*.ddeb
+            ${{ github.workspace }}/OBS-Studio-Rust-${{ steps.check.outputs.version }}-Sources.tar.gz
+            ${{ github.workspace }}/OBS-Studio-Rust-${{ steps.check.outputs.version }}-Windows-x64.zip
+            ${{ github.workspace }}/OBS-Studio-Rust-${{ steps.check.outputs.version }}-Windows-x64-Installer.exe
+            ${{ github.workspace }}/OBS-Studio-Rust-${{ steps.check.outputs.version }}-Windows-x64-PDBs.zip
+            ${{ github.workspace }}/OBS-Studio-Rust-${{ steps.check.outputs.version }}-Windows-arm64.zip
+            ${{ github.workspace }}/OBS-Studio-Rust-${{ steps.check.outputs.version }}-Windows-arm64-PDBs.zip
