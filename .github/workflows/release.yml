@@ -102,12 +102,22 @@ jobs:
         run: |
           $Version = $env:TAG -replace '^v', ''
           New-Item -ItemType Directory -Force dist | Out-Null
-          Copy-Item (Get-ChildItem build_x64 'obs-studio-*-windows-x64.zip' | Select-Object -First 1) \
-            "dist/OBS-Studio-Rust-$Version-windows-x64.zip"
+          # The portable ZIP is produced by package-obs (cpack -G ZIP) and verified
+          # there; find it wherever it ended up, excluding the symbols archive.
+          $Zip = Get-ChildItem -Path . -Recurse -Filter '*-windows-x64.zip' -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -notmatch 'symbols' -and $_.FullName -notmatch '\\\.git\\' } |
+            Select-Object -First 1
+          if (-not $Zip) {
+            Write-Output 'collect-artifacts: no portable zip found under the workspace.'
+            Get-ChildItem build_x64 | Sort-Object Name | Select-Object Name, Length | Format-Table
+            Get-ChildItem . -File | Sort-Object Name | Select-Object Name, Length | Format-Table
+            exit 1
+          }
+          Copy-Item $Zip.FullName -Destination "dist/OBS-Studio-Rust-$Version-windows-x64.zip" -ErrorAction Stop
           $Msi = Get-ChildItem build_x64 '*.msi' | Select-Object -First 1
           if (-not $Msi) { throw 'the MSI was not produced' }
           Copy-Item $Msi.FullName "dist/OBS-Studio-Rust-$Version-windows-x64.msi"
-          Get-Item dist/*
+          Get-ChildItem dist
 
       - name: Upload artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
