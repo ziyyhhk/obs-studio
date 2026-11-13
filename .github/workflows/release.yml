@@ -44,6 +44,9 @@ jobs:
         with:
           submodules: recursive
           ref: ${{ github.ref }}
+          # Package-Windows.ps1 names packages from `git describe --match '[0-9]*.[0-9]*.[0-9]*'`,
+          # which needs full history and upstream's semver tags; a depth-1 checkout has none.
+          fetch-depth: 0
 
       - name: Set up ccache
         shell: pwsh
