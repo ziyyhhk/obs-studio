@@ -64,10 +64,14 @@ impl Sink for [u8] {
     }
 }
 
-/// The offset of each channel in a UYVX pixel.
-const UYVX_U: usize = 0;
-const UYVX_Y: usize = 1;
-const UYVX_V: usize = 2;
+/// The offset of each channel in a UYVX pixel. Used by the non-x86_64
+/// fallback of the block kernels (`platform::uyvx`); unused on x86_64.
+#[allow(dead_code)]
+pub(crate) const UYVX_U: usize = 0;
+#[allow(dead_code)]
+pub(crate) const UYVX_Y: usize = 1;
+#[allow(dead_code)]
+pub(crate) const UYVX_V: usize = 2;
 
 /// The two 32-bit pixels `luma[at]` and `luma[at + 1]`, each with `pixel`'s
 /// value, as the two adjacent `uint32_t` stores the C makes.
@@ -91,7 +95,10 @@ fn at(base: usize, add: u32) -> usize {
 const BLOCK_BYTES: usize = 16;
 
 /// The four bytes of channel `c` in the four UYVX pixels at `at` in `row`.
-fn channel(row: &[u8], at: usize, c: usize) -> [u8; 4] {
+/// Used by the non-x86_64 fallback of the block kernels (`platform::uyvx`);
+/// unused on x86_64.
+#[allow(dead_code)]
+pub(crate) fn channel(row: &[u8], at: usize, c: usize) -> [u8; 4] {
     [
         row[at + c],
         row[at + 4 + c],
@@ -101,8 +108,10 @@ fn channel(row: &[u8], at: usize, c: usize) -> [u8; 4] {
 }
 
 /// Channel `c` averaged over pixels 0-1 and 2-3 of the two rows at `at`,
-/// `(a + b + c + d) >> 2`.
-fn average(line1: &[u8], line2: &[u8], at: usize, c: usize) -> [u8; 2] {
+/// `(a + b + c + d) >> 2`. Used by the non-x86_64 fallback of the block
+/// kernels (`platform::uyvx`); unused on x86_64.
+#[allow(dead_code)]
+pub(crate) fn average(line1: &[u8], line2: &[u8], at: usize, c: usize) -> [u8; 2] {
     let avg = |p: usize| {
         let sum = u16::from(line1[at + p + c])
             + u16::from(line1[at + p + 4 + c])
@@ -159,15 +168,8 @@ pub fn compress_uyvx_to_i420<S, D>(
         let u_row = u.bytes_mut(chroma_pos, blocks * 2);
         let v_row = v.bytes_mut(chroma_pos, blocks * 2);
         for i in 0..blocks {
-            let (pixel, block) = (i * 4, i * BLOCK_BYTES);
-            let luma_at = pixel;
-            luma[luma_at..luma_at + 4].copy_from_slice(&channel(line1, block, UYVX_Y));
-            luma[lum_stride + luma_at..lum_stride + luma_at + 4]
-                .copy_from_slice(&channel(line2, block, UYVX_Y));
-            let [u01, u23] = average(line1, line2, block, UYVX_U);
-            let [v01, v23] = average(line1, line2, block, UYVX_V);
-            u_row[i * 2..i * 2 + 2].copy_from_slice(&[u01, u23]);
-            v_row[i * 2..i * 2 + 2].copy_from_slice(&[v01, v23]);
+            let block = i * BLOCK_BYTES;
+            crate::platform::uyvx_block_i420(luma, lum_stride, u_row, v_row, line1, line2, block, i);
         }
         y = y.wrapping_add(2);
     }
@@ -211,13 +213,8 @@ pub fn compress_uyvx_to_nv12<S, D>(
         let chroma_pos = (y >> 1).wrapping_mul(chroma_linesize) as usize;
         let chroma_row = chroma.bytes_mut(chroma_pos, blocks * 4);
         for i in 0..blocks {
-            let (pixel, block) = (i * 4, i * BLOCK_BYTES);
-            luma[pixel..pixel + 4].copy_from_slice(&channel(line1, block, UYVX_Y));
-            luma[lum_stride + pixel..lum_stride + pixel + 4]
-                .copy_from_slice(&channel(line2, block, UYVX_Y));
-            let [u01, u23] = average(line1, line2, block, UYVX_U);
-            let [v01, v23] = average(line1, line2, block, UYVX_V);
-            chroma_row[pixel..pixel + 4].copy_from_slice(&[u01, v01, u23, v23]);
+            let block = i * BLOCK_BYTES;
+            crate::platform::uyvx_block_nv12(luma, lum_stride, chroma_row, line1, line2, block, i);
         }
         y = y.wrapping_add(2);
     }
@@ -261,15 +258,8 @@ pub fn convert_uyvx_to_i444<S, D>(
         let u_row = u.bytes_mut(pos, stride + bytes);
         let v_row = v.bytes_mut(pos, stride + bytes);
         for i in 0..blocks {
-            let (pixel, block) = (i * 4, i * BLOCK_BYTES);
-            for (rows, c) in [
-                (&mut *luma, UYVX_Y),
-                (&mut *u_row, UYVX_U),
-                (&mut *v_row, UYVX_V),
-            ] {
-                rows[pixel..pixel + 4].copy_from_slice(&channel(line1, block, c));
-                rows[stride + pixel..stride + pixel + 4].copy_from_slice(&channel(line2, block, c));
-            }
+            let block = i * BLOCK_BYTES;
+            crate::platform::uyvx_block_i444(luma, u_row, v_row, stride, line1, line2, block, i);
         }
         y = y.wrapping_add(2);
     }

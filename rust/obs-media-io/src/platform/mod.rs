@@ -42,6 +42,10 @@ cfg_select! {
 
 pub(crate) use with_audio_thread_port;
 
+#[allow(unsafe_code)] // the SSE2 block kernels
+mod uyvx;
+pub(crate) use uyvx::{uyvx_block_i420, uyvx_block_i444, uyvx_block_nv12};
+
 cfg_select! {
     target_arch = "x86_64" => {
         /// [`crate::audio_clamp::clamp_samples_scalar`] compiled for AVX2.
