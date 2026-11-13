@@ -16,6 +16,14 @@ const P3: [f32; 4] = [-0.155_915, 0.935_489, 0.233_872, -0.103_943];
 /// `get_sample_peak()`: the largest absolute sample of the previous four
 /// and of each whole group of four in `samples[..frames]`.
 pub fn sample_peak(prev: [f32; 4], samples: &[f32], frames: usize) -> f32 {
+    crate::platform::sample_peak(prev, samples, frames)
+}
+
+/// The portable loop [`sample_peak`] dispatches to (#3415); public for the
+/// bit-identity tests and the `port_comparison` benches.
+#[doc(hidden)]
+#[inline(always)]
+pub fn sample_peak_scalar(prev: [f32; 4], samples: &[f32], frames: usize) -> f32 {
     let mut peak = prev.map(f32::abs);
     // Whole groups only, as the C's `i + 3 < nr_samples`. One slice up front
     // lets the compiler drop the per-sample bounds checks and load a group
