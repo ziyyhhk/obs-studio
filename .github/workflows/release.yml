@@ -146,12 +146,13 @@ jobs:
           prerelease: true
           files: dist/*
           body: |
-            Personal fork build of OBS-Studio-Rust, the Rust rewrite of OBS Studio. NOT the official obs-rust project; not affiliated with it or with the OBS Project. Windows x64 portable ZIP and BETA MSI installer. Unsigned, so Windows SmartScreen will warn on first run.
+            Personal fork build of OBS-Studio-Rust, the Rust rewrite of OBS Studio. NOT the official obs-rust project; not affiliated with it or with the OBS Project. FINAL update — this fork is discontinued; see the README. Windows x64 portable ZIP and BETA MSI installer. Unsigned, so Windows SmartScreen will warn on first run.
 
-            Includes the fork-local optimizations: SSE2 UYVX packer kernels (~2.3x on that kernel) and the AVX2 sample_peak volmeter dispatch (both bit-exact against the C oracle).
+            Includes the fork-local optimizations: SSE2 UYVX packer kernels (~2.3x on that kernel) and the AVX2 sample_peak volmeter dispatch (both bit-exact against the C oracle). Recording CPU is unchanged (encoder-bound); RAM benefit inherited from upstream.
 
             Installing
 
             - MSI: run OBS-Studio-Rust-<version>-windows-x64.msi and pick an install folder.
             - ZIP: unpack anywhere and start bin\64bit\obs64.exe (SmartScreen: More info, Run anyway).
             - Settings live in %APPDATA%\obs-studio-rust and are copied from a normal upstream OBS setup on first launch; nothing overwrites your existing install.
+            - The Audio Mixer (in-source dB meters) is already included: View > Docks > Audio Mixer.
